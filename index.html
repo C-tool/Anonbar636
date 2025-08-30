@@ -4,273 +4,102 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anonbar — Telegram বট ব্যবহার করুন</title>
-  <meta name="description" content="Anonbar ব্যবহার করতে আমাদের Telegram বট @anonbar_bot চালু করুন। গোপনীয়তা-সমর্থিত বার্তা।" />
-  <meta name="color-scheme" content="dark light" />
   <style>
-    /* ---------- Theme ---------- */
     :root{
-      --bg:#0b0f14;          /* dark background */
-      --bg-elev:#121821;     /* cards */
-      --text:#e6f1ff;        /* main text */
-      --muted:#9fb3c8;       /* secondary */
-      --accent:#37ff8b;      /* hacker green */
-      --accent-2:#00c2ff;    /* cyber blue */
-      --card:#0f141c;
-      --border:rgba(55,255,139,.15);
-      --shadow:0 6px 24px rgba(0,0,0,.35);
-      --header-h:52px;       /* ultra thin header */
-      --footer-h:40px;       /* ultra thin footer */
-      --radius:14px;
+      --bg:#0b0f14; --bg-elev:#121821; --text:#e6f1ff; --muted:#9fb3c8;
+      --accent:#37ff8b; --accent-2:#00c2ff; --border:rgba(55,255,139,.15);
+      --header-h:52px; --footer-h:40px;
     }
     [data-theme="light"]{
-      --bg:#f7fafc;
-      --bg-elev:#ffffff;
-      --text:#0b1220;
-      --muted:#334155;
-      --accent:#0ea5e9;
-      --accent-2:#7c3aed;
-      --card:#ffffff;
-      --border:rgba(2,132,199,.15);
-      --shadow:0 8px 24px rgba(2,8,23,.08);
+      --bg:#f7fafc; --bg-elev:#ffffff; --text:#0b1220; --muted:#334155;
+      --accent:#0ea5e9; --accent-2:#7c3aed; --border:rgba(2,132,199,.15);
     }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:ui-monospace,monospace;min-height:100dvh;display:grid;grid-template-rows:var(--header-h) 1fr var(--footer-h)}
+    a{color:var(--accent);text-decoration:none}
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      color:var(--text); background:var(--bg); line-height:1.6;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
+    header{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    [data-theme="light"] header{background:rgba(255,255,255,.7)}
+    .nav{max-width:1100px;height:var(--header-h);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+    .brand{display:flex;align-items:center;gap:8px;font-weight:900;letter-spacing:.6px}
+    .pill{width:18px;height:18px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
 
-    /* ---------- Layout ---------- */
-    .grid{
-      min-height:100dvh; display:grid; grid-template-rows: var(--header-h) 1fr var(--footer-h);
-    }
-
-    /* ---------- HEADER (Ultra thin) ---------- */
-    header{
-      position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(8px);
-      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.0));
-      border-bottom:1px solid var(--border);
-    }
-    [data-theme="light"] header{ background:rgba(255,255,255,.7) }
-
-    .nav{max-width:1100px; height:var(--header-h); margin:0 auto; display:flex; align-items:center; gap:12px; padding:0 12px}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.6px}
-    .pill{width:18px; height:18px; border-radius:4px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:0 0 18px rgba(55,255,139,.45)}
-
-    .spacer{flex:1}
-    .menu{display:flex; gap:10px; align-items:center}
-    .menu a{padding:6px 10px; border-radius:8px; border:1px solid transparent}
-    .menu a.active{border-color:var(--border); background:rgba(55,255,139,.06)}
-
-    .icon-btn{all:unset; cursor:pointer; border:1px solid var(--border); padding:6px 10px; border-radius:8px}
-
-    /* Mobile */
+    .menu{display:flex;gap:12px;align-items:center}
+    .menu a{padding:6px 10px;border-radius:6px}
+    .menu a.active{background:rgba(55,255,139,.08);border:1px solid var(--border)}
     .hamburger{display:none}
-    @media (max-width: 780px){
-      .menu{position:fixed; top:var(--header-h); inset-inline:12px; display:none; flex-direction:column; background:var(--bg-elev); border:1px solid var(--border); border-radius:12px; padding:10px; box-shadow:var(--shadow)}
+    .icon-btn{all:unset;cursor:pointer;padding:6px 10px;border:1px solid var(--border);border-radius:6px}
+
+    @media(max-width:768px){
+      .menu{display:none;position:absolute;top:var(--header-h);right:14px;flex-direction:column;background:var(--bg-elev);border:1px solid var(--border);padding:10px;border-radius:10px}
       .menu.open{display:flex}
       .hamburger{display:inline-flex}
     }
 
-    /* ---------- BACKGROUND MATRIX ---------- */
-    #mx{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.25}
-    @media (prefers-reduced-motion: reduce){ #mx{display:none} }
+    main{padding:14px;max-width:1100px;margin:0 auto}
+    .card{background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+    h1{font-size:1.4rem;margin-bottom:8px}
+    .lead{color:var(--muted);margin-bottom:12px}
 
-    /* ---------- MAIN ---------- */
-    main{position:relative; z-index:1}
-    .wrap{max-width:1100px; margin:18px auto; padding:12px}
+    .kvs{display:grid;gap:8px;margin:10px 0}
+    .kv{display:flex;gap:10px}
+    .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
 
-    .hero{display:grid; grid-template-columns: 1.2fr .8fr; gap:18px}
-    @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
+    .btn{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#00160b;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;border:none}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
 
-    .card{background:var(--bg-elev); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:clamp(16px,3vw,28px)}
-    .h1{font-size:clamp(24px,5vw,40px); line-height:1.2; margin:0 0 6px}
-    .lead{color:var(--muted); margin:4px 0 12px}
-
-    .cta{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
-    .btn{appearance:none; cursor:pointer; border:1px solid var(--border); border-radius:10px; padding:10px 14px; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#00160b}
-    .btn:hover{filter:brightness(1.03)}
-    .btn.ghost{background:transparent; color:var(--text)}
-
-    .kvs{display:grid; gap:10px; margin-top:10px}
-    .kv{display:flex; gap:10px; align-items:flex-start}
-    .dot{width:10px; height:10px; flex:0 0 10px; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:0 0 0 4px rgba(55,255,139,.12)}
-
-    /* Section pages */
-    section.page{display:none}
-    section.page.active{display:block}
-    .section-title{font-size:clamp(18px,2.8vw,26px); margin:0 0 6px}
-
-    /* ---------- FOOTER (Ultra thin) ---------- */
-    footer{height:var(--footer-h); display:flex; align-items:center; justify-content:center; color:var(--muted); border-top:1px solid var(--border)}
-
-    /* Small helper */
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;}
+    footer{height:var(--footer-h);display:flex;align-items:center;justify-content:center;color:var(--muted);border-top:1px solid var(--border)}
   </style>
 </head>
 <body>
-  <canvas id="mx" aria-hidden="true"></canvas>
-  <div class="grid">
-    <header>
-      <nav class="nav" aria-label="Primary">
-        <div class="brand" aria-label="Anonbar">
-          <span class="pill"></span>
-          <span>ANONBAR</span>
-        </div>
-        <button class="icon-btn hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
-        <div class="spacer"></div>
-        <div class="menu" id="menu">
-          <a href="#home" data-page="home" class="active">Home</a>
-          <a href="#about" data-page="about">About</a>
-          <a href="#contacts" data-page="contacts">Contacts</a>
-          <a href="#privacy" data-page="privacy">Privacy Policy</a>
-          <a href="#iftari" data-page="iftari">Iftari</a>
-          <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">🌗</button>
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="wrap">
-        <!-- HOME -->
-        <section id="home" class="page active">
-          <div class="hero">
-            <div class="card">
-              <h1 class="h1">Anonbar ব্যবহার করতে আমাদের Telegram বট ব্যবহার করুন</h1>
-              <p class="lead">গোপনীয়তা বজায় রেখে নিরাপদে বার্তা পাঠাতে বটটি চালু করুন।</p>
-
-              <div class="kvs">
-                <div class="kv"><span class="dot"></span>Telegram-এ <b>Anonbar Bot</b> খুলুন</div>
-                <div class="kv"><span class="dot"></span><b>Start</b> চাপুন এবং নির্দেশনা অনুসরণ করুন</div>
-                <div class="kv"><span class="dot"></span>আপনার বার্তা পাঠান—আপনার পরিচয় গোপন থাকবে</div>
-              </div>
-
-              <div class="cta">
-                <a class="btn" href="https://t.me/anonbar_bot" target="_blank" rel="noopener">Open @anonbar_bot</a>
-                <button class="btn ghost mono" id="copyBtn">bot: @anonbar_bot — Copy</button>
-              </div>
-            </div>
-            <div class="card mono">
-              <div style="opacity:.9; margin-bottom:8px">~/anonbar » quickstart.sh</div>
-              <pre style="margin:0; white-space:pre-wrap">$ curl -L https://t.me/anonbar_bot
-$ open @anonbar_bot
-$ press ⏎  to <em>Start</em>
-$ send "hello"  # identity stays hidden ⚡</pre>
-            </div>
-          </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section id="about" class="page">
-          <div class="card">
-            <h2 class="section-title">About</h2>
-            <p>Anonbar একটি privacy-first টুল। আপনার বার্তার সাথে আপনার পরিচয় শেয়ার হয় না। নিরাপদ, দ্রুত ও সরল।</p>
-          </div>
-        </section>
-
-        <!-- CONTACTS -->
-        <section id="contacts" class="page">
-          <div class="card">
-            <h2 class="section-title">Contacts</h2>
-            <p>সাপোর্টের জন্য Telegram-এ মেসেজ করুন: <a href="https://t.me/anonbar_bot" target="_blank" rel="noopener">@anonbar_bot</a></p>
-            <p class="mono">বা ইমেইল: support@anonbar.example</p>
-          </div>
-        </section>
-
-        <!-- PRIVACY -->
-        <section id="privacy" class="page">
-          <div class="card">
-            <h2 class="section-title">Privacy Policy</h2>
-            <p>আমরা আপনার ব্যক্তিগত তথ্য সংগ্রহ করি না, বিজ্ঞাপনের জন্য বিক্রি করি না, এবং কেবল পরিষেবা দেওয়ার প্রয়োজনীয় মেটাডেটা সাময়িকভাবে প্রক্রিয়ায় ব্যবহার করি। আরও বিস্তারিত নীতি এখানে যুক্ত করুন।</p>
-          </div>
-        </section>
-
-        <!-- IFTARI -->
-        <section id="iftari" class="page">
-          <div class="card">
-            <h2 class="section-title">Iftari</h2>
-            <p>রমজান মাসে বিশেষ ইফতারি আপডেট/ঘোষণা এখানে দেখাবে। আপনি চাইলে মেনু, সময়সূচি বা অফার যুক্ত করতে পারেন।</p>
-            <ul>
-              <li>তারিখ: শীঘ্রই ঘোষণা</li>
-              <li>সময়: মাগরিবের ১৫ মিনিট আগে</li>
-              <li>বিশেষ: খেজুর, ফল, ড্রিংকস, হালকা স্ন্যাকস</li>
-            </ul>
-          </div>
-        </section>
+  <header>
+    <nav class="nav">
+      <div class="brand"><span class="pill"></span><span>ANONBAR</span></div>
+      <button class="hamburger icon-btn" id="hamburger">☰</button>
+      <div class="menu" id="menu">
+        <a href="#home" data-page="home" class="active">Home</a>
+        <a href="#about" data-page="about">About</a>
+        <a href="#contacts" data-page="contacts">Contacts</a>
+        <a href="#privacy" data-page="privacy">Privacy</a>
+        <a href="#iftari" data-page="iftari">Iftari</a>
+        <button class="icon-btn" id="themeBtn">🌗</button>
       </div>
-    </main>
+    </nav>
+  </header>
 
-    <footer>
-      <small>© <span id="yr"></span> Anonbar · GitHub Pages</small>
-    </footer>
-  </div>
+  <main>
+    <section id="home" class="card">
+      <h1>Anonbar ব্যবহার করতে আমাদের Telegram বট ব্যবহার করুন</h1>
+      <p class="lead">গোপনীয়তা বজায় রেখে নিরাপদে বার্তা পাঠাতে বটটি চালু করুন।</p>
+      <div class="kvs">
+        <div class="kv"><span class="dot"></span> Telegram-এ <b>Anonbar Bot</b> খুলুন</div>
+        <div class="kv"><span class="dot"></span> <b>Start</b> চাপুন এবং নির্দেশনা অনুসরণ করুন</div>
+        <div class="kv"><span class="dot"></span> আপনার বার্তা পাঠান—আপনার পরিচয় গোপন থাকবে</div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="https://t.me/anonbar_bot" target="_blank">Open @anonbar_bot</a>
+        <button class="btn ghost" id="copyBtn">bot: @anonbar_bot — Copy</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>© <span id="yr"></span> Anonbar · GitHub Pages</footer>
 
   <script>
-    // ---------- Theme (dark/light with system + memory) ----------
-    (function(){
-      const root = document.documentElement;
-      const saved = localStorage.getItem('anon_theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      root.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
-      document.getElementById('yr').textContent = new Date().getFullYear();
-
-      const themeBtn = document.getElementById('themeBtn');
-      function setTheme(t){ root.setAttribute('data-theme', t); localStorage.setItem('anon_theme', t); themeBtn.textContent = t==='dark' ? '🌗' : '🌞'; }
-      setTheme(root.getAttribute('data-theme'));
-      themeBtn.addEventListener('click', ()=> setTheme(root.getAttribute('data-theme')==='dark' ? 'light' : 'dark'));
-    })();
-
-    // ---------- Mobile menu ----------
-    const hamburger = document.getElementById('hamburger');
-    const menu = document.getElementById('menu');
-    hamburger.addEventListener('click', ()=> menu.classList.toggle('open'));
-
-    // ---------- Router (simple SPA) ----------
-    const pages = Array.from(document.querySelectorAll('section.page'));
-    const links = Array.from(menu.querySelectorAll('a[data-page]'));
-    function activate(page){
-      pages.forEach(p=> p.classList.toggle('active', p.id===page));
-      links.forEach(a=> a.classList.toggle('active', a.dataset.page===page));
-      if(window.innerWidth<=780) menu.classList.remove('open');
+    document.getElementById('yr').textContent=new Date().getFullYear();
+    const menu=document.getElementById('menu');
+    document.getElementById('hamburger').onclick=()=>menu.classList.toggle('open');
+    document.getElementById('copyBtn').onclick=async()=>{
+      try{await navigator.clipboard.writeText('@anonbar_bot');
+        copyBtn.textContent='Copied ✔';
+        setTimeout(()=>copyBtn.textContent='bot: @anonbar_bot — Copy',1200)
+      }catch(e){copyBtn.textContent='Try again'}
     }
-    function route(){
-      const hash = (location.hash || '#home').replace('#','');
-      const target = pages.find(p=> p.id===hash) ? hash : 'home';
-      activate(target);
-    }
-    window.addEventListener('hashchange', route); route();
-
-    // ---------- Copy bot handle ----------
-    const copyBtn = document.getElementById('copyBtn');
-    copyBtn.addEventListener('click', async ()=>{
-      try{ await navigator.clipboard.writeText('@anonbar_bot'); copyBtn.textContent='Copied ✔'; setTimeout(()=> copyBtn.textContent='bot: @anonbar_bot — Copy',1200);}catch(e){ copyBtn.textContent='Try again'; setTimeout(()=> copyBtn.textContent='bot: @anonbar_bot — Copy',1200)}
-    });
-
-    // ---------- Matrix rain background ----------
-    (function(){
-      const c = document.getElementById('mx'); const ctx = c.getContext('2d');
-      const chars = 'アイウエオカキクケコｱｲｳｴｵｶｷｸｹｺ01█░▒▓<>#/*$%&';
-      let w, h, cols, drops;
-      function resize(){ w= c.width = window.innerWidth; h= c.height = window.innerHeight; cols = Math.floor(w/14); drops = Array(cols).fill(1); }
-      resize(); window.addEventListener('resize', resize);
-      function draw(){
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg'); ctx.globalAlpha = 0.2; ctx.fillRect(0,0,w,h);
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
-        ctx.font = '14px ui-monospace, monospace';
-        for(let i=0;i<drops.length;i++){
-          const text = chars[Math.floor(Math.random()*chars.length)];
-          ctx.fillText(text, i*14, drops[i]*14);
-          if(drops[i]*14 > h && Math.random()>0.975) drops[i]=0; drops[i]++;
-        }
-        requestAnimationFrame(draw);
-      }
-      if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ draw(); }
-    })();
+    const root=document.documentElement,btn=document.getElementById('themeBtn');
+    function setTheme(t){root.setAttribute('data-theme',t);localStorage.setItem('anon_theme',t);btn.textContent=t==='dark'?'🌗':'🌞'}
+    const saved=localStorage.getItem('anon_theme')|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    setTheme(saved);
+    btn.onclick=()=>setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark');
   </script>
 </body>
 </html>
