@@ -3,51 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anonbar — Telegram বট ব্যবহার করুন</title>
+  <title>Anonbar — Bot Home</title>
+  <meta name="color-scheme" content="dark light" />
   <style>
-    :root{
-      --bg:#0b0f14; --bg-elev:#121821; --text:#e6f1ff; --muted:#9fb3c8;
-      --accent:#37ff8b; --accent-2:#00c2ff; --border:rgba(55,255,139,.15);
-      --header-h:52px; --footer-h:40px;
-    }
-    [data-theme="light"]{
-      --bg:#f7fafc; --bg-elev:#ffffff; --text:#0b1220; --muted:#334155;
-      --accent:#0ea5e9; --accent-2:#7c3aed; --border:rgba(2,132,199,.15);
-    }
+    :root{--bg:#0b0f14;--bg-elev:#121821;--text:#e6f1ff;--muted:#9fb3c8;--accent:#37ff8b;--accent-2:#00c2ff;--border:rgba(55,255,139,.15);--header-h:52px;--footer-h:40px;--radius:12px;--max:1100px}
+    [data-theme="light"]{--bg:#f7fafc;--bg-elev:#ffffff;--text:#0b1220;--muted:#334155;--accent:#0ea5e9;--accent-2:#7c3aed;--border:rgba(2,132,199,.15)}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:ui-monospace,monospace;min-height:100dvh;display:grid;grid-template-rows:var(--header-h) 1fr var(--footer-h)}
+    body{background:var(--bg);color:var(--text);font-family:ui-monospace,menlo,monospace;min-height:100dvh;display:grid;grid-template-rows:var(--header-h) 1fr var(--footer-h)}
     a{color:var(--accent);text-decoration:none}
-
     header{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
     [data-theme="light"] header{background:rgba(255,255,255,.7)}
-    .nav{max-width:1100px;height:var(--header-h);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
-    .brand{display:flex;align-items:center;gap:8px;font-weight:900;letter-spacing:.6px}
+    .nav{max-width:var(--max);height:var(--header-h);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+    .brand{display:flex;align-items:center;gap:8px;font-weight:900}
     .pill{width:18px;height:18px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
-
     .menu{display:flex;gap:12px;align-items:center}
     .menu a{padding:6px 10px;border-radius:6px}
     .menu a.active{background:rgba(55,255,139,.08);border:1px solid var(--border)}
     .hamburger{display:none}
     .icon-btn{all:unset;cursor:pointer;padding:6px 10px;border:1px solid var(--border);border-radius:6px}
-
-    @media(max-width:768px){
-      .menu{display:none;position:absolute;top:var(--header-h);right:14px;flex-direction:column;background:var(--bg-elev);border:1px solid var(--border);padding:10px;border-radius:10px}
-      .menu.open{display:flex}
-      .hamburger{display:inline-flex}
-    }
-
-    main{padding:14px;max-width:1100px;margin:0 auto}
-    .card{background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
-    h1{font-size:1.4rem;margin-bottom:8px}
+    @media(max-width:768px){.menu{display:none;position:absolute;top:var(--header-h);right:14px;flex-direction:column;background:var(--bg-elev);border:1px solid var(--border);padding:10px;border-radius:10px}.menu.open{display:flex}.hamburger{display:inline-flex}}
+    main{padding:14px;max-width:var(--max);margin:0 auto}
+    .card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+    h1{font-size:clamp(22px,4.6vw,36px);margin-bottom:8px}
     .lead{color:var(--muted);margin-bottom:12px}
-
     .kvs{display:grid;gap:8px;margin:10px 0}
     .kv{display:flex;gap:10px}
     .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
-
     .btn{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#00160b;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;border:none}
     .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
-
+    .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media(max-width:980px){.posts{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){.posts{grid-template-columns:1fr}}
+    .post-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px}
+    .post-card h3{font-size:18px}
+    .meta{color:var(--muted);font-size:12px}
+    article{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+    article h1{font-size:clamp(22px,4.6vw,34px)}
+    article h2{margin-top:18px;font-size:22px}
+    article p{margin:10px 0;color:var(--text)}
+    .back{display:inline-block;margin:10px 0}
     footer{height:var(--footer-h);display:flex;align-items:center;justify-content:center;color:var(--muted);border-top:1px solid var(--border)}
   </style>
 </head>
@@ -58,6 +52,7 @@
       <button class="hamburger icon-btn" id="hamburger">☰</button>
       <div class="menu" id="menu">
         <a href="#home" data-page="home" class="active">Home</a>
+        <a href="#posts" data-page="posts">Posts</a>
         <a href="#about" data-page="about">About</a>
         <a href="#contacts" data-page="contacts">Contacts</a>
         <a href="#privacy" data-page="privacy">Privacy</a>
@@ -67,39 +62,92 @@
     </nav>
   </header>
 
-  <main>
-    <section id="home" class="card">
-      <h1>Anonbar ব্যবহার করতে আমাদের Telegram বট ব্যবহার করুন</h1>
-      <p class="lead">গোপনীয়তা বজায় রেখে নিরাপদে বার্তা পাঠাতে বটটি চালু করুন।</p>
-      <div class="kvs">
-        <div class="kv"><span class="dot"></span> Telegram-এ <b>Anonbar Bot</b> খুলুন</div>
-        <div class="kv"><span class="dot"></span> <b>Start</b> চাপুন এবং নির্দেশনা অনুসরণ করুন</div>
-        <div class="kv"><span class="dot"></span> আপনার বার্তা পাঠান—আপনার পরিচয় গোপন থাকবে</div>
-      </div>
-      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="https://t.me/anonbar_bot" target="_blank">Open @anonbar_bot</a>
-        <button class="btn ghost" id="copyBtn">bot: @anonbar_bot — Copy</button>
-      </div>
-    </section>
-  </main>
+  <main id="view"></main>
 
   <footer>© <span id="yr"></span> Anonbar · GitHub Pages</footer>
 
   <script>
-    document.getElementById('yr').textContent=new Date().getFullYear();
-    const menu=document.getElementById('menu');
-    document.getElementById('hamburger').onclick=()=>menu.classList.toggle('open');
-    document.getElementById('copyBtn').onclick=async()=>{
-      try{await navigator.clipboard.writeText('@anonbar_bot');
-        copyBtn.textContent='Copied ✔';
-        setTimeout(()=>copyBtn.textContent='bot: @anonbar_bot — Copy',1200)
-      }catch(e){copyBtn.textContent='Try again'}
+    const POSTS_DIR = 'Anonbar/posts';
+    const POSTS_INDEX = POSTS_DIR + '/posts.json';
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    function setTheme(t){ root.setAttribute('data-theme', t); localStorage.setItem('anon_theme', t); themeBtn.textContent = t==='dark' ? '🌗' : '🌞'; }
+    setTheme(localStorage.getItem('anon_theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    themeBtn.onclick = ()=> setTheme(root.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    const menu = document.getElementById('menu');
+    document.getElementById('hamburger').onclick = ()=> menu.classList.toggle('open');
+
+    const view = document.getElementById('view');
+    function page(html){ view.innerHTML = html; menu.classList.remove('open'); }
+    function navActive(id){ Array.from(menu.querySelectorAll('a[data-page]')).forEach(a=> a.classList.toggle('active', a.dataset.page===id)); }
+
+    function Home(){
+      navActive('home');
+      page(`
+        <section class="card">
+          <h1>Anonbar ব্যবহার করতে আমাদের Telegram বট ব্যবহার করুন</h1>
+          <p class="lead">গোপনীয়তা বজায় রেখে নিরাপদে বার্তা পাঠাতে বটটি চালু করুন।</p>
+          <div class="kvs">
+            <div class="kv"><span class="dot"></span> Telegram-এ <b>Anonbar Bot</b> খুলুন</div>
+            <div class="kv"><span class="dot"></span> <b>Start</b> চাপুন এবং নির্দেশনা অনুসরণ করুন</div>
+            <div class="kv"><span class="dot"></span> আপনার বার্তা পাঠান—আপনার পরিচয় গোপন থাকবে</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn" href="https://t.me/anonbar_bot" target="_blank" rel="noopener">Open @anonbar_bot</a>
+            <button class="btn ghost" id="copyBtn">bot: @anonbar_bot — Copy</button>
+          </div>
+        </section>
+      `);
+      const b = document.getElementById('copyBtn');
+      if(b){ b.onclick = async ()=>{ try{ await navigator.clipboard.writeText('@anonbar_bot'); b.textContent = 'Copied ✔'; setTimeout(()=> b.textContent = 'bot: @anonbar_bot — Copy', 1200); }catch(e){} } }
     }
-    const root=document.documentElement,btn=document.getElementById('themeBtn');
-    function setTheme(t){root.setAttribute('data-theme',t);localStorage.setItem('anon_theme',t);btn.textContent=t==='dark'?'🌗':'🌞'}
-    const saved=localStorage.getItem('anon_theme')|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-    setTheme(saved);
-    btn.onclick=()=>setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark');
+
+    async function Posts(){
+      navActive('posts');
+      page(`<section class="card"><h1>Posts</h1><div class="posts" id="plist"></div></section>`);
+      const list = document.getElementById('plist');
+      try{
+        const res = await fetch(POSTS_INDEX, {cache:'no-cache'});
+        const posts = res.ok ? await res.json() : [];
+        if(!posts.length){ list.innerHTML = '<p class="lead">কোন পোস্ট নেই। Anonbar/posts/posts.json যোগ করুন।</p>'; return; }
+        list.innerHTML = posts.map(p=>`<article class="post-card"><h3><a href="#post/${p.slug}">${p.title}</a></h3><div class="meta">${p.date||''}</div><p>${p.excerpt||''}</p><div><a class="btn ghost" href="#post/${p.slug}">Read</a></div></article>`).join('');
+      }catch(e){ list.innerHTML = '<p class="lead">পোস্ট লোড করা যায়নি।</p>'; }
+    }
+
+    async function Post(slug){
+      navActive('posts');
+      page(`<article><a class="back" href="#posts">← All posts</a><div id="article">লোড হচ্ছে…</div></article>`);
+      const box = document.getElementById('article');
+      try{
+        const res = await fetch(POSTS_DIR + '/' + slug + '.md', {cache:'no-cache'});
+        if(!res.ok){ box.innerHTML = '<p class="lead">পোস্টটি পাওয়া যায়নি।</p>'; return; }
+        const md = await res.text();
+        const html = md.split('
+
+').map(x=> `<p>${x}</p>`).join('');
+        box.innerHTML = html;
+      }catch(e){ box.innerHTML = '<p class="lead">লোড ত্রুটি।</p>'; }
+    }
+
+    function About(){ navActive('about'); page('<section class="card"><h1>About</h1><p>Anonbar একটি privacy-first টুল।</p></section>'); }
+    function Contacts(){ navActive('contacts'); page('<section class="card"><h1>Contacts</h1><p>Telegram: <a href="https://t.me/anonbar_bot" target="_blank" rel="noopener">@anonbar_bot</a></p><p class="meta">support@anonbar.example</p></section>'); }
+    function Privacy(){ navActive('privacy'); page('<section class="card"><h1>Privacy Policy</h1><p>আমরা ব্যক্তিগত তথ্য সংগ্রহ করি না। আরও বিস্তারিত নীতি এখানে যুক্ত করুন।</p></section>'); }
+    function Iftari(){ navActive('iftari'); page('<section class="card"><h1>Iftari</h1><ul><li>তারিখ: শীঘ্রই ঘোষণা</li><li>সময়: মাগরিবের ১৫ মিনিট আগে</li></ul></section>'); }
+
+    function route(){
+      const h = location.hash || '#home';
+      const parts = h.slice(1).split('/');
+      if(parts[0]==='post' && parts[1]){ Post(parts[1]); return; }
+      if(h==='#posts'){ Posts(); return; }
+      if(h==='#about'){ About(); return; }
+      if(h==='#contacts'){ Contacts(); return; }
+      if(h==='#privacy'){ Privacy(); return; }
+      if(h==='#iftari'){ Iftari(); return; }
+      Home();
+    }
+    window.addEventListener('hashchange', route);
+    route();
   </script>
 </body>
 </html>
