@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anonbar — শুরু করতে Telegram বট ব্যবহার করুন</title>
+  <meta name="description" content="Anonbar ব্যবহার করতে আমাদের Telegram বট @anonbar_bot চালু করুন। আপনার পরিচয় গোপন রেখে বার্তা পাঠান।" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <style>
+    :root{
+      --bg1:#0ea5e9; /* sky-500 */
+      --bg2:#7c3aed; /* violet-600 */
+      --card:#ffffff;
+      --text:#0f172a; /* slate-900 */
+      --muted:#475569; /* slate-600 */
+      --btn:#0ea5e9;
+      --btn-hover:#0284c7;
+      --ring: rgba(14,165,233,.35);
+      --shadow: 0 10px 25px rgba(2, 8, 23, .15);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", "Noto Sans Bengali", Arial, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, var(--bg1), transparent),
+                  radial-gradient(1000px 700px at 110% 10%, var(--bg2), transparent),
+                  linear-gradient(180deg, #0b1020, #0b1020);
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .wrap{width:min(960px, 100%);}
+    .card{
+      background:var(--card);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding: clamp(20px, 4vw, 40px);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight:600; font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+      color:#0b6aa1; background:rgba(14,165,233,.12);
+      border:1px solid rgba(14,165,233,.25);
+      border-radius:999px; padding:6px 10px; margin-bottom:12px;
+    }
+    h1{font-size: clamp(28px, 4.5vw, 40px); line-height:1.1; margin:8px 0 12px}
+    p.lead{font-size: clamp(16px, 2.2vw, 18px); color:var(--muted); margin:0 0 18px}
+    .list{margin:18px 0; padding:0; list-style:none; display:grid; gap:10px}
+    .list li{display:flex; gap:10px; align-items:flex-start; color:#334155}
+    .dot{width:10px; height:10px; flex:0 0 10px; margin-top:7px; border-radius:50%; background:linear-gradient(135deg, var(--bg1), var(--bg2)); box-shadow:0 0 0 4px rgba(14,165,233,.12)}
+    .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:22px}
+    .btn{
+      appearance:none; border:0; cursor:pointer; font-weight:700; letter-spacing:.2px;
+      background:var(--btn); color:white; padding:12px 18px; border-radius:12px;
+      transition:.2s transform ease, .2s background ease, .2s box-shadow ease;
+      box-shadow:0 8px 20px rgba(14,165,233,.35);
+    }
+    .btn:hover{background:var(--btn-hover); transform:translateY(-1px)}
+    .btn:focus{outline:0; box-shadow:0 0 0 6px var(--ring)}
+    .btn.secondary{background:#e2e8f0; color:#0f172a; box-shadow:none}
+    .bot-tag{
+      background:#f1f5f9; border:1px dashed #cbd5e1; color:#0f172a;
+      padding:10px 12px; border-radius:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .footer{color:#cbd5e1; text-align:center; font-size:13px; margin-top:14px}
+    .plane{width:18px; height:18px; display:inline-block}
+    .accent{position:absolute; right:-80px; top:-80px; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(124,58,237,.35), transparent 60%); filter:blur(10px)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="title">
+      <span class="badge" aria-label="Anonbar Notice">Anonbar</span>
+      <h1 id="title">Anonbar ব্যবহার করতে আমাদের Telegram বট ব্যবহার করুন</h1>
+      <p class="lead">নিরাপদে, সহজে, পরিচয় গোপন রেখে বার্তা পাঠাতে বটটি চালু করুন। শুরু করার ধাপগুলো নিচে দেওয়া হলো।</p>
+
+      <ul class="list" aria-label="শুরু করার ধাপ">
+        <li><span class="dot" aria-hidden="true"></span><span>Telegram-এ <strong>Anonbar Bot</strong> খুলুন।</span></li>
+        <li><span class="dot" aria-hidden="true"></span><span><strong>Start</strong> চাপুন এবং নির্দেশনা অনুসরণ করুন।</span></li>
+        <li><span class="dot" aria-hidden="true"></span><span>আপনার বার্তা পাঠান—আপনার পরিচয় গোপন থাকবে।</span></li>
+      </ul>
+
+      <div class="bot-tag" aria-label="বট ইউজারনেম">
+        <svg class="plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span id="bot-username">bot: @anonbar_bot</span>
+        <button class="btn secondary" id="copyBtn" aria-label="ইউজারনেম কপি করুন">কপি</button>
+      </div>
+
+      <div class="cta">
+        <a class="btn" id="openBot" href="https://t.me/anonbar_bot" target="_blank" rel="noopener" aria-label="Open anonbar bot on Telegram">Telegram এ বট খুলুন</a>
+        <a class="btn secondary" href="https://telegram.org/" target="_blank" rel="noopener">Telegram ডাউনলোড</a>
+      </div>
+
+      <div class="accent" aria-hidden="true"></div>
+    </main>
+
+    <p class="footer">এই সাইটটি GitHub Pages দ্বারা পরিবেশিত। &middot; © <span id="yr"></span> Anonbar</p>
+  </div>
+
+  <script>
+    // year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // copy username
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.addEventListener('click', async () => {
+      const handle = '@anonbar_bot';
+      try{
+        await navigator.clipboard.writeText(handle);
+        copyBtn.textContent = 'কপি হয়েছে';
+        setTimeout(()=> copyBtn.textContent = 'কপি', 1600);
+      }catch(e){
+        copyBtn.textContent = 'আবার চেষ্টা করুন';
+        setTimeout(()=> copyBtn.textContent = 'কপি', 1600);
+      }
+    });
+
+    // try to open in Telegram if installed (optional enhancement)
+    document.getElementById('openBot').addEventListener('click', (e) => {
+      // no-op: link opens normally; custom schemes often blocked by browsers
+    });
+  </script>
+</body>
+</html>
